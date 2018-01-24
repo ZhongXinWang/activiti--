@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/Resources/activiti/activiti.cfg.xml</file>
+        </fileset>
+        <fileset id="fileset2" name="Spring Application Context (2)" removed="false">
+          <file>file://$MODULE_DIR$/src/Resources/springmvc/spring-mvc.xml</file>
+        </fileset>
+        <fileset id="fileset3" name="Spring Application Context (3)" removed="false">
+          <file>file://$MODULE_DIR$/src/Resources/activiti/activiti.cfg.xml</file>
+          <file>file://$MODULE_DIR$/src/Resources/spring/beans.xml</file>
+          <file>file://$MODULE_DIR$/src/Resources/springmvc/spring-mvc.xml</file>
+          <file>file://$MODULE_DIR$/../deployManagement/src/Resource/my-spring-mvc.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -9,5 +27,6 @@
     <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="module" module-name="deployManagement" />
   </component>
 </module>

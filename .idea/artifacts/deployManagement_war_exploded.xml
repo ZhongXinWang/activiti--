@@ -1,0 +1,70 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="deployManagement:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/deployManagement_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="deployManagement" />
+          <element id="module-output" name="common" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/junit-4.9.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/h2-1.3.176.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/c3p0-0.9.1.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/log4j-1.2.17.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/joda-time-2.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/mybatis-3.3.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/jsr250-api-1.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/aopalliance-1.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/fastjson-1.2.44.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/javaGeom-0.11.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/slf4j-api-1.7.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activation-1.1.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/commons-dbcp-1.4.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/commons-io-2.0.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/groovy-all-2.4.5.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/javax.mail-1.5.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/jgraphx-1.10.4.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/commons-email-1.4.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/commons-pool-1.5.4.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/jackson-core-2.2.3.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/commons-lang3-3.3.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/slf4j-log4j12-1.7.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-rest-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/jcl-over-slf4j-1.7.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/mybatis-spring-1.2.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-engine-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-spring-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/jackson-databind-2.2.3.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-tx-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/commons-fileupload-1.2.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-aop-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-orm-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-web-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/jackson-annotations-2.2.3.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-core-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-jdbc-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-bpmn-model-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-beans-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-bpmn-layout-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-common-rest-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/mysql-connector-java-5.1.10.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-webmvc-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-context-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-bpmn-converter-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-json-converter-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-image-generator-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-simple-workflow-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-expression-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-security-web-3.2.3.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/activiti-process-validation-5.22.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-security-core-3.2.3.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-security-config-3.2.3.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/common/lib/spring-security-crypto-3.2.3.RELEASE.jar" />
+          <element id="library" level="project" name="lib" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="deployManagement/web/Web" />
+    </root>
+  </artifact>
+</component>
