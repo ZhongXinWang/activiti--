@@ -8,13 +8,13 @@
 <body>
  <div style="width:900px;margin:50px auto;">
      <h2>上传压缩包部署流程</h2>
-     <form action="${ctx}/deployment" method="post" enctype="multipart/form-data">
+     <form action="${ctx}/deployment/files" method="post" enctype="multipart/form-data">
 
          <input type="file" name="file" id="file">
          <input type="submit" value="上传">
 
      </form>
-     <a href="">新建模型</a>
+     <a href="${ctx}/deployment">新建模型</a>
   <h2>流程信息列表：</h2>
 
   <table border="1" width="90%">
@@ -37,8 +37,8 @@
               <td>${item.name}</td>
               <td>${item.key}</td>
               <td>${item.version}</td>
-              <td><a href="${ctx}/deployment?id=${item.deploymentId}&name=${item.resourceName}">${item.resourceName}</a></td>
-              <td><a href="${ctx}/deployment?id=${item.deploymentId}&name=${item.diagramResourceName}">${item.diagramResourceName}</a></td>
+              <td><a href="${ctx}/deployment/resources?id=${item.deploymentId}&name=${item.resourceName}">${item.resourceName}</a></td>
+              <td><a href="${ctx}/deployment/resources?id=${item.deploymentId}&name=${item.diagramResourceName}">${item.diagramResourceName}</a></td>
               <td><a href="javascript:void(0)"  onclick="deletes(${item.deploymentId})">删除</a></td>
           </tr>
 

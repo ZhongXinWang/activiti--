@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jee="http://www.springframework.org/schema/jee"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!--  单例json对象 -->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+
 
     <bean id="processEngineConfiguration"
           class="org.activiti.spring.SpringProcessEngineConfiguration">
@@ -20,6 +16,42 @@
         <property name="transactionManager" ref="txManager" />
         <!-- 设置建表策略 true/create-drop/drop-create 删除重建，当表数据由于测试混乱，方便重建 -->
         <property name="databaseSchemaUpdate" value="true" />
+
+        <!-- 是否开启工作的数据日志 -->
+        <!-- <property name="enableDatabaseEventLogging" value="true" /> -->
+        <!--<property name="history" value="full"/>
+        <property name="processDefinitionCacheLimit" value="10"/>-->
+        <!-- mail -->
+        <!-- <property name="mailServerHost" value="localhost"/>
+        <property name="mailServerUsername" value="kafeitu"/>
+        <property name="mailServerPassword" value="000000"/>
+        <property name="mailServerPort" value="2025"/> -->
+        <!-- UUID作为主键生成策略  -->
+        <!-- <property name="idGenerator" ref="uuidGenerator" /> -->
+
+        <!-- 生成流程图的字体
+        <property name="activityFontName" value="宋体"/>
+        <property name="labelFontName" value="宋体"/>-->
+
+        <!-- 缓存支持
+        <property name="processDefinitionCache">
+            <bean class="me.kafeitu.demo.activiti.util.cache.DistributedCache" />
+        </property>-->
+
+        <!-- 自动部署 -->
+        <!-- <property name="deploymentResources">
+            <list>
+                <value>classpath*:/deployments/*</value>
+            </list>
+        </property> -->
+
+        <!-- 自定义表单字段类型 -->
+        <!-- <property name="customFormTypes">
+            <list>
+                <bean class="me.kafeitu.demo.activiti.activiti.form.UsersFormType"/>
+            </list>
+        </property> -->
+
     </bean>
 
     <!-- 和spring集成，交给spring管理，由spring容器创建一个单例 -->

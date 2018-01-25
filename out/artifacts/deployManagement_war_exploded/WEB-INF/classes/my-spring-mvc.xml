@@ -13,7 +13,7 @@
 
 	<!-- 配置自动扫描Controller -->
 	<context:component-scan
-		base-package="com.activiti.controller"
+		base-package="com.activiti.controller;com.rest.editor"
 		use-default-filters="false">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
@@ -25,12 +25,11 @@
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 			<!-- fastjson配置 -->
-			<bean
-				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+			<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
 				<property name="supportedMediaTypes">
 					<list>
-						<value>text/html;charset=UTF-8</value>
 						<value>application/json;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
 					</list>
 				</property>
 				<property name="fastJsonConfig">
@@ -39,10 +38,28 @@
 					</bean>
 				</property>
 			</bean>
+			<!--配置json
+			<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+
+				<property name="supportedMediaTypes">
+
+					<list>
+
+						<value>text/html;charset=UTF-8</value>
+
+						<value>text/json;charset=UTF-8</value>
+
+						<value>application/json;charset=UTF-8</value>
+
+					</list>
+
+				</property>
+
+			</bean>-->
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
-    <!--&lt;!&ndash; 解决跨域 &ndash;&gt;-->
+	<!--&lt;!&ndash; 解决跨域 &ndash;&gt;-->
 	<!--<mvc:cors>-->
 		<!--<mvc:mapping path="/api/**" -->
 		    <!--allowed-origins="*"-->
@@ -56,7 +73,7 @@
 
     <!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/static/"/>
-
+	<mvc:resources mapping="/plugins/**" location="/plugins/"/>
 	 <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
     <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:order="1">

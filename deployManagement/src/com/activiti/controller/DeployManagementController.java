@@ -1,10 +1,16 @@
 package com.activiti.controller;
 
 import com.demo.util.R;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.MemberKey;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.impl.cmd.AddCommentCmd;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.ibatis.javassist.compiler.MemberResolver;
 import org.codehaus.groovy.tools.shell.util.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +49,7 @@ public class DeployManagementController {
        /* repositoryService.createDeployment().addClasspathResource("diagram/HelloWorld.bpmn")
                 .addClasspathResource("diagram/HelloWorld.png").deploy();*/
 
-        //获取到已经部署的流程
+        //获得流程定义对象
         List<ProcessDefinition> dataList = repositoryService.createProcessDefinitionQuery().list();
 
         model.addAttribute("dataList",dataList);
@@ -56,7 +63,7 @@ public class DeployManagementController {
     *
     * */
 
-    @RequestMapping(value = "/deployment",method = RequestMethod.POST)
+    @RequestMapping(value = "/deployment/files",method = RequestMethod.POST)
     public String deploy(@RequestParam("file")MultipartFile file){
 
         if(file != null){
@@ -105,7 +112,7 @@ public class DeployManagementController {
       @Param  resourceName 资源的名称
     *
     * */
-    @RequestMapping(value = "/deployment",method = RequestMethod.GET)
+    @RequestMapping(value = "/deployment/resources",method = RequestMethod.GET)
     public void getXmlResource(@RequestParam("id") String deploymentId,@RequestParam("name") String resourceName, HttpServletResponse response){
 
         //获取到查询对象
@@ -146,5 +153,46 @@ public class DeployManagementController {
 
 
     }
+
+    /*
+    *
+    * 跳转到新建模型对象，这里需要创建一个modelId
+    * */
+    @RequestMapping(value = "/deployment",method = RequestMethod.GET)
+    public void toCreate(HttpServletRequest request, HttpServletResponse response){
+
+
+        try {
+
+            ObjectMapper mapper = new ObjectMapper();//创建jackson对象
+            ObjectNode editorNode = mapper.createObjectNode();//创建节点
+            editorNode.put("id", "canvas");                //添加数据
+            editorNode.put("resourceId", "canvas");
+            ObjectNode stencilSetNode = mapper.createObjectNode();
+            stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
+            editorNode.put("stencilset", stencilSetNode);
+            org.activiti.engine.repository.Model modelData = repositoryService.newModel();  //使用repositoryService创建model
+
+            ObjectNode modelObjectNode = mapper.createObjectNode();
+            modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, "hello1111");
+            modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);
+            String description = "hello1111";
+            modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, description);
+            modelData.setMetaInfo(modelObjectNode.toString());
+            modelData.setName("hello1111");
+            modelData.setKey("12313123");
+
+            //保存模型
+            repositoryService.saveModel(modelData);
+            repositoryService.addModelEditorSource(modelData.getId(), editorNode.toString().getBytes("utf-8"));
+            //跳转到modeler.html并传递刚刚生成的modelId
+            response.sendRedirect(request.getContextPath() + "/plugins/procerss-editor/modeler.html?modelId=" + modelData.getId());
+        }catch (Exception e){
+
+            System.err.println("出现了异常");
+        }
+
+    }
+
 
 }
