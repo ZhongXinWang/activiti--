@@ -71,7 +71,11 @@ angular.module('activitiModeler')
             	var quickMenuItems = [];
             	
             	var morphRoles = [];
-                data = JSON.parse(JSON.parse(data));
+
+                if(typeof(data) == "string") {
+
+                    data =  JSON.parse(JSON.parse(data));
+                }
                 for (var i = 0; i < data.rules.morphingRules.length; i++) 
                 {
                     var role = data.rules.morphingRules[i].role;

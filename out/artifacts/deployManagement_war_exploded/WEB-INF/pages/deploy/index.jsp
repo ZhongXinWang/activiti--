@@ -1,23 +1,30 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="base/common.jsp"%>
+<%@include file="../base/common.jsp"%>
 <html>
 <head>
     <title>流程部署</title>
     <script src="${ctx}/static/js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css">
+
+
 </head>
 <body>
  <div style="width:900px;margin:50px auto;">
-     <h2>上传压缩包部署流程</h2>
+     <div class="jumbotron">
+     <h1>上传压缩包部署流程</h1>
      <form action="${ctx}/deployment/files" method="post" enctype="multipart/form-data">
-
-         <input type="file" name="file" id="file">
-         <input type="submit" value="上传">
-
+         <div class="form-group">
+         <input type="file" name="file" id="file"  class="form-control">
+         </div>
+         <div class="form-group">
+         <input type="submit" class="btn btn-primary btn-lg" value="上传">
+        </div>
      </form>
-     <a href="${ctx}/deployment">新建模型</a>
+     </div>
+     <a class="btn btn-primary"  href="${ctx}/deployment/model/management">模型管理</a>
   <h2>流程信息列表：</h2>
-
-  <table border="1" width="90%">
+     <div class="table-responsive">
+  <table class="table">
   <tr>
       <th>流程定义ID</th>
       <th>流程部署Id</th>
@@ -45,8 +52,9 @@
       </c:forEach>
 
   </table>
-
+   </div>
      </div>
+ <script src="${ctx}/static/js/bootstrap.min.js"></script>
 <script>
 
     function deletes(id){

@@ -261,7 +261,7 @@ KISBPM.TOOLBAR = {
         },
         
         closeEditor: function(services) {
-        	window.location.href = "../../../../";
+        	window.location.href = "../../deployments";
         },
         
         /**
@@ -297,19 +297,21 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
 
     var modelMetaData = $scope.editor.getModelMetaData();
 
+        if(typeof(modelMetaData) == "string"){
+
+            modelMetaData = JSON.parse(modelMetaData);
+        }
+
     var description = '';
     if (modelMetaData.description) {
     	description = modelMetaData.description;
     }
-    
+    console.log(modelMetaData.name);
     var saveDialog = { 'name' : modelMetaData.name,
             'description' : description};
-    
     $scope.saveDialog = saveDialog;
-    
     var json = $scope.editor.getJSON();
     json = JSON.stringify(json);
-
     var params = {
         modeltype: modelMetaData.model.modelType,
         json_xml: json,
@@ -326,7 +328,9 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
 
     $scope.saveAndClose = function () {
     	$scope.save(function() {
-    		window.location.href = "../../../../";
+
+    		window.location.href = "../../deployment/model/management";
+
     	});
     };
     $scope.save = function (successCallback) {
@@ -339,7 +343,6 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
         $scope.status = {
         	loading: true
         };
-        
         modelMetaData.name = $scope.saveDialog.name;
         modelMetaData.description = $scope.saveDialog.description;
 
@@ -376,7 +379,7 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
         };
 
         // Update
-        $http({    method: 'PUT',
+        $http({method: 'PUT',
             data: params,
             ignoreErrors: true,
             headers: {'Accept': 'application/json',

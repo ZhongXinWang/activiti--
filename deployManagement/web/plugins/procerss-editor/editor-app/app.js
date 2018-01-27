@@ -100,7 +100,11 @@ activitiModeler
                 $http({method: 'GET', url: modelUrl}).
                     success(function (data, status, headers, config) {
 
+                       if(typeof (data) == "string"){
+
                         data = JSON.parse(data);
+
+                      }
                         $rootScope.editor = new ORYX.Editor(data);
                         $rootScope.modelData = angular.fromJson(data);
                         $rootScope.editorFactory.resolve();

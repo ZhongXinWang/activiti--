@@ -14,11 +14,17 @@ package com.rest.editor.model;
 
 import com.alibaba.fastjson.JSON;
 import com.demo.util.R;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.bpmn.converter.util.InputStreamProvider;
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.impl.util.io.InputStreamSource;
 import org.activiti.engine.repository.Model;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,6 +34,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Tijs Rademakers
@@ -57,6 +67,16 @@ public class ModelEditorJsonRestResource implements ModelDataJsonConstants {
           modelNode.put(MODEL_NAME, model.getName());
         }
         modelNode.put(MODEL_ID, model.getId());
+
+        //把xml转化为json
+       /* byte[] modelEditorSource = repositoryService.getModelEditorSource(model.getId());
+
+        InputStreamProvider inputStreamProvider = new InputStreamSource(new ByteArrayInputStream(modelEditorSource)); //构建流对象
+        BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();//创建装换器
+        BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(inputStreamProvider,false,false);
+        ObjectNode jsonNodes = new BpmnJsonConverter().convertToJson(bpmnModel);*/
+
+        //构建
         ObjectNode editorJsonNode = (ObjectNode) objectMapper.readTree(
             new String(repositoryService.getModelEditorSource(model.getId()), "utf-8"));
 

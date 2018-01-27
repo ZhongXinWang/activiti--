@@ -8494,7 +8494,14 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
             // using eval instead of prototype's parsing,
             // since there are functions in this JSON.
             eval("this._jsonObject =" + response.responseText);
-			this._jsonObject = JSON.parse(this._jsonObject);
+
+			if(typeof(this._jsonObject) == "string"){
+
+
+				this._jsonObject = JSON.parse(this._jsonObject);
+
+			}
+
         } 
         catch (e) {
             throw "Stenciset corrupt: " + e;
@@ -10891,9 +10898,15 @@ ORYX.Editor = {
 		var model = config;
 		
 		this.id = model.modelId;
-		
-		if(JSON.parse(config).model) {
-			model = JSON.parse(config).model;
+
+		if(typeof(config) == "string"){
+
+			config = JSON.parse(config);
+
+		}
+
+		if(config.model) {
+			model = config.model;
 		}
 
         if(!this.id) {

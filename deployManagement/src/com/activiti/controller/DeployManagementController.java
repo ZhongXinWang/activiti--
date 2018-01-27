@@ -1,10 +1,14 @@
 package com.activiti.controller;
 
 import com.demo.util.R;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.MemberKey;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.editor.constants.ModelDataJsonConstants;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.impl.cmd.AddCommentCmd;
 import org.activiti.engine.repository.DeploymentBuilder;
@@ -20,8 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -54,7 +57,7 @@ public class DeployManagementController {
 
         model.addAttribute("dataList",dataList);
 
-        return "index";
+        return "deploy/index";
     }
     /*
     *
@@ -158,8 +161,8 @@ public class DeployManagementController {
     *
     * 跳转到新建模型对象，这里需要创建一个modelId
     * */
-    @RequestMapping(value = "/deployment",method = RequestMethod.GET)
-    public void toCreate(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(value = "/deployment/model/management",method = RequestMethod.POST)
+    public void toCreate(@RequestParam("name") String name,@RequestParam("description") String description,@RequestParam("key") String key,HttpServletRequest request, HttpServletResponse response){
 
 
         try {
@@ -174,13 +177,12 @@ public class DeployManagementController {
             org.activiti.engine.repository.Model modelData = repositoryService.newModel();  //使用repositoryService创建model
 
             ObjectNode modelObjectNode = mapper.createObjectNode();
-            modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, "hello1111");
+            modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, name);
             modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);
-            String description = "hello1111";
             modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, description);
             modelData.setMetaInfo(modelObjectNode.toString());
-            modelData.setName("hello1111");
-            modelData.setKey("12313123");
+            modelData.setName(name);
+            modelData.setKey(key);
 
             //保存模型
             repositoryService.saveModel(modelData);
@@ -191,6 +193,141 @@ public class DeployManagementController {
 
             System.err.println("出现了异常");
         }
+
+    }
+     /*
+      * @Author:王钟鑫
+      * @Description:获取到所有的模型
+      * @Param:
+      * @Date:2018/1/27_10:42
+      *
+      * */
+    @RequestMapping(value="/deployment/model/management",method = RequestMethod.GET)
+    public  String manage(Model model){
+
+        List<org.activiti.engine.repository.Model> dataList = repositoryService.createModelQuery()
+                                                              .orderByCreateTime().desc().list();
+
+        model.addAttribute("dataList",dataList);
+
+        return "deploy/model";
+
+    }
+
+     /*
+      * @Author:王钟鑫
+      * @Description:获取到模型的xml信息或者png的数据
+      * @Param:modelId图片资源id,editorSourceValueId  获取xml，editorSourceExtraValueId 获取 png图片
+      * @Date:2018/1/27_14:30
+      *
+      * */
+     @RequestMapping(value = "/deployment/model/resources",method = RequestMethod.GET)
+     public void getModelXmlResource(@RequestParam("id") String modelId,@RequestParam(value = "vid" ,defaultValue = "",required = false) String editorSourceValueId,@RequestParam(value = "evid" ,defaultValue = "",required = false) String editorSourceExtraValueId, HttpServletResponse response){
+
+         //获取到对应的模型
+         org.activiti.engine.repository.Model model = repositoryService.getModel(modelId);
+         byte[] modelEditorSourceExtra = null;
+
+         //查询模型的原数据 xml
+         if(!editorSourceValueId.equals("")){
+
+
+             modelEditorSourceExtra = repositoryService.getModelEditorSource(model.getId());
+             JsonNode editNode = null;
+             try {
+                 editNode = new ObjectMapper().readTree(modelEditorSourceExtra); //读取节点
+                 BpmnJsonConverter jsonConverter = new BpmnJsonConverter();//
+                 BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editNode);
+                 modelEditorSourceExtra = new BpmnXMLConverter().convertToXML(bpmnModel);//转化为对应的xml
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+
+         }else{ //获取到png图片
+
+             modelEditorSourceExtra = repositoryService.getModelEditorSourceExtra(model.getId());
+
+         }
+
+         //输出到界面
+         InputStream put = new ByteArrayInputStream(modelEditorSourceExtra);
+
+         byte[] b = new byte[1024];
+         int len = -1;
+         try {
+             while ((len = put.read(b,0,1024)) != -1){
+
+                 response.getOutputStream().write(b,0,len);
+             }
+
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+
+     }
+     /*
+      * @Author:王钟鑫
+      * @Description:部署流程
+      * @Param:modelId 模型编号
+      * @Date:2018/1/27_15:21
+      *
+      * */
+    @RequestMapping(value = "/deployment/model/deployment/{id}",method = RequestMethod.PUT)
+    public @ResponseBody  Object deployByModel(@PathVariable("id") String modelId){
+
+        try {
+            org.activiti.engine.repository.Model model = repositoryService.getModel(modelId);
+
+            byte[] modelEditorSource = repositoryService.getModelEditorSource(model.getId());
+
+            //把json进行转化为xml
+            JsonNode editNode = null;
+            editNode = new ObjectMapper().readTree(modelEditorSource); //读取节点
+            BpmnJsonConverter jsonConverter = new BpmnJsonConverter();//
+            BpmnModel bpmnModel = jsonConverter.convertToBpmnModel(editNode);
+            modelEditorSource = new BpmnXMLConverter().convertToXML(bpmnModel);//转化为对应的xml
+
+
+            String processName = model.getName() + ".bpmn20.xml";
+            //部署
+
+
+            repositoryService.createDeployment().name(model.getName())
+                                .addString(processName,new String(modelEditorSource,"utf-8"))
+                                .deploy();
+            return R.success();
+
+        } catch (UnsupportedEncodingException e) {
+
+            e.printStackTrace();
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+        return R.failure();
+
+    }
+    /*
+  * 删除model
+  * @Param deploymentId  部署Id
+  *
+  * */
+    @ResponseBody
+    @RequestMapping(value = "/deployment/model/{id}",method = RequestMethod.DELETE)
+    public Object deleteModel(@PathVariable("id")String modelId){
+
+        try {
+            repositoryService.deleteModel(modelId);
+            return R.success();
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+        }
+
+        return R.failure();
+
 
     }
 
