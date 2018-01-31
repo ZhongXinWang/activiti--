@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class TestUser {
 
-    //获取到activiti测试类的ActivitiRule对象，可以来获得对应的Service
+    //获取到activiti测试类的ActivitiRule对象，可以来获得对应的Service,xml名称要叫activiti-cfg.xml
     @Rule
     public  ActivitiRule activitiRule = new ActivitiRule();
 
@@ -50,9 +50,8 @@ public class TestUser {
         List<User> dataList = identityService.createUserQuery().list();
         for (User user:dataList){
 
-
             System.out.println("user的值是：---" + user.getId()+"--"+user.getFirstName() + "，当前方法=TestUser.testQueryUser()");
-            
+
         }
 
         long count = identityService.createNativeUserQuery().sql("select count(*) from "+managementService.getTableName(User.class)).count();
@@ -64,6 +63,14 @@ public class TestUser {
     public void testUserAndGruop(){
 
         IdentityService identityService = activitiRule.getIdentityService();
+        /*
+        *
+        Group group = identityService.newGroup("groupId"); //这里的Id一定要指定，要不然会报ActivitiException
+        group.setId(null);   //把Id设置为null，就是由activiti帮我们产生
+        group.setName("用户组");
+        identityService.saveGroup(group);
+        *
+        * */
 
         Group group = new GroupEntity();
 
@@ -101,6 +108,7 @@ public class TestUser {
 
         }
 
+
         //使用原始的sql查询数据
         List<User> list = identityService.createNativeUserQuery().sql("select *from act_id_user").list();
 
@@ -108,7 +116,6 @@ public class TestUser {
 
             System.out.println("u的值是：---" + u.getFirstName()+u.getEmail()+ "，当前方法=TestUser.testGruop()");
         }
-
 
     }
 

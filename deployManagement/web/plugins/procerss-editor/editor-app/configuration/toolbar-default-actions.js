@@ -261,7 +261,7 @@ KISBPM.TOOLBAR = {
         },
         
         closeEditor: function(services) {
-        	window.location.href = "../../deployments";
+        	window.location.href = "../../deployment/model/management";
         },
         
         /**

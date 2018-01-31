@@ -294,6 +294,7 @@ public class DeployManagementController {
 
             repositoryService.createDeployment().name(model.getName())
                                 .addString(processName,new String(modelEditorSource,"utf-8"))
+                                .enableDuplicateFiltering()
                                 .deploy();
             return R.success();
 

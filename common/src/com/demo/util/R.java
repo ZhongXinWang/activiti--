@@ -33,6 +33,13 @@ public class R {
         return new R("操作失败",false);
 
     }
+    public static R success(Object data){
+
+        R r =  new R("操作成功",true);
+        r.setData(data);
+        return r;
+
+    }
 
     public String getMsg() {
         return msg;

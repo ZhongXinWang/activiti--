@@ -5,11 +5,9 @@
     <title>流程部署</title>
     <script src="${ctx}/static/js/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css">
-
-
 </head>
 <body>
- <div style="width:900px;margin:50px auto;">
+ <div style="width:1200px;margin:50px auto;">
      <div class="jumbotron">
      <h1>上传压缩包部署流程</h1>
      <form action="${ctx}/deployment/files" method="post" enctype="multipart/form-data">
@@ -34,7 +32,6 @@
       <th>XML资源文件</th>
       <th>图片资源文件</th>
       <th>操作</th>
-      
   </tr>
       <c:forEach items="${dataList}" var="item">
 
@@ -46,7 +43,10 @@
               <td>${item.version}</td>
               <td><a href="${ctx}/deployment/resources?id=${item.deploymentId}&name=${item.resourceName}">${item.resourceName}</a></td>
               <td><a href="${ctx}/deployment/resources?id=${item.deploymentId}&name=${item.diagramResourceName}">${item.diagramResourceName}</a></td>
-              <td><a href="javascript:void(0)"  onclick="deletes(${item.deploymentId})">删除</a></td>
+              <td>
+                  <a href="javascript:void(0)"  onclick="deletes(${item.deploymentId})">删除</a>
+                  <a href="javascript:void(0)"  onclick="update(${item.deploymentId})">启动流程</a>
+              </td>
           </tr>
 
       </c:forEach>
@@ -63,10 +63,7 @@
         var index = confirm('是否删除');
 
         if(index){
-
-
             $.ajax({
-
                 url:'${ctx}/deployment/'+id,
                 type:'DELETE',
                 success: function(data){
@@ -88,6 +85,11 @@
 
 
         }
+    }
+
+    function update(id){
+
+
     }
 
 </script>
